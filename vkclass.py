@@ -17,6 +17,7 @@ class VKUser:
         self.sex = 0
         self.city = 0
         self.country = 0
+        self.common_count = 0
         self.interests = ''
         self.music = ''
         self.tv = ''
@@ -39,6 +40,10 @@ class VKUser:
             pass
         try:
             self.country = self.user_data['country']['id']
+        except KeyError:
+            pass
+        try:
+            self.common_count = self.user_data['common_count']
         except KeyError:
             pass
         try:
@@ -105,16 +110,6 @@ class VKUser:
             result = []
         return result
 
-    def get_mutual_friends(self, other):
-        method_url = f'{API_URL}/friends.getMutual'
-        params_mutual_friends = dict(access_token=TOKEN, source_uid=self.user_id, v=VERSION,
-                                     target_uid=other.user_id)
-        try:
-            result = requests.get(method_url, params_mutual_friends).json()['response']
-        except KeyError:
-            result = []
-        return result
-
     def search_users(self, sex, age_from, age_to, offset):
         method_url = f'{API_URL}/users.search'
         params_users_search = dict(access_token=TOKEN, v=VERSION, fields=FIELDS,
@@ -137,6 +132,10 @@ class VKUser:
                     pass
                 try:
                     instance.country = item['country']['id']
+                except KeyError:
+                    pass
+                try:
+                    instance.common_count = item['common_count']
                 except KeyError:
                     pass
                 try:

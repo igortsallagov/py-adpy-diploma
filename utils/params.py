@@ -1,3 +1,6 @@
+from config import FIELDS
+
+
 def ask_params():
     user_id = input('Insert your VK ID: ')
     age_from = input('Age from: ')
@@ -8,20 +11,12 @@ def ask_params():
 
 def ask_missing_params(user):
     updated_data = dict()
-    if 'city' not in user.user_data:
-        updated_data['city'] = input('City ID: ')
-    if 'country' not in user.user_data:
-        updated_data['country'] = input('Country ID: ')
-    if user.user_data['interests'] is '':
-        updated_data['interests'] = input('Insert your interests: ')
-    if user.user_data['music'] is '':
-        updated_data['music'] = input('Insert your favourite music: ')
-    if user.user_data['movies'] is '':
-        updated_data['movies'] = input('Insert your favourite movies: ')
-    if user.user_data['tv'] is '':
-        updated_data['tv'] = input('Insert your favourite tv shows: ')
-    if user.user_data['books'] is '':
-        updated_data['books'] = input('Insert favourite your books: ')
+    for item in FIELDS.split(', ')[1:3]:
+        if item not in user.user_data:
+            updated_data[item] = input(f'{item.capitalize()} ID: ')
+    for item in FIELDS.split(', ')[4:]:
+        if user.user_data[item] is '':
+            updated_data[item] = input(f'Insert your {item}: ')
     return updated_data
 
 

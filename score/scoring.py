@@ -4,13 +4,9 @@ from score.defaults import INTERESTS_SCORE, FRIENDS_SCORE, GROUPS_SCORE, \
                         MUSIC_SCORE, BOOKS_SCORE, TV_SCORE, MOVIES_SCORE, DEFAULT_PATTERN
 
 
-def check_mutual_friends(user, users):
-    for position, item in enumerate(users):
-        mutual_friends = user.get_mutual_friends(item)
-        print(f'Progress: {position + 1}/{len(users)}')
-        if mutual_friends:
-            item.score += FRIENDS_SCORE * len(mutual_friends)
-        time.sleep(0.35)
+def check_mutual_friends(users):
+    for item in users:
+        item.score += FRIENDS_SCORE * item.common_count
 
 
 def check_mutual_groups(user, users):
@@ -66,7 +62,7 @@ def check_common_books(user, users):
 
 def score_users(user, users):
     print('Checking mutual friends')
-    check_mutual_friends(user, users)
+    check_mutual_friends(users)
     print('Checking mutual groups')
     check_mutual_groups(user, users)
     print('Checking common interests')
