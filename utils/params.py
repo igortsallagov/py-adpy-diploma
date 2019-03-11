@@ -16,7 +16,10 @@ def ask_missing_params(user):
             updated_data[item] = input(f'{item.capitalize()} ID: ')
     for item in FIELDS.split(', ')[4:]:
         if item not in user.user_data or user.user_data[item] is '':
-            updated_data[item] = input(f'Insert your {item}: ')
+            if item == 'tv':
+                updated_data[item] = input(f'Insert your {item} shows: ')
+            else:
+                updated_data[item] = input(f'Insert your {item}: ')
     return updated_data
 
 
