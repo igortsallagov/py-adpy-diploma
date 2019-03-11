@@ -4,7 +4,7 @@ from config import FIELDS
 from db.db_config import START, STOP
 
 
-class TestVKUser(unittest.TestCase):
+class VKUserTestCase(unittest.TestCase):
     def setUp(self):
         self.user = VKUser('1')
         self.user_data = self.user.get_user_data()
@@ -33,7 +33,7 @@ class TestVKUser(unittest.TestCase):
         self.assertIsInstance(value[1][0], VKUser, 'Search results are not instances of VKUser')
 
 
-class TestParams(unittest.TestCase):
+class ParamsTestCase(unittest.TestCase):
     def test_sex_in_fields(self):
         self.assertIn('sex', FIELDS.split(', '), 'Sex is not in FIELDS')
 
