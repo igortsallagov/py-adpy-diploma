@@ -33,9 +33,21 @@ def prepare_result(top_matches):
     for match in top_matches:
         photos_list = match[0].get_photos()
         top_photos = get_top_photos(photos_list)
-        result[str(match[0].user_id)] = top_photos
+        result[str(match[0].user_id)] = {
+            'url': f'http://vk.com/id{match[0].user_id}',
+            'photos': top_photos
+        }
         time.sleep(0.35)
     return result
+
+
+def print_result(prepared_result):
+    position = 1
+    for match in prepared_result.keys():
+        print(f'{position}. Profile URL: {prepared_result[match]["url"]}')
+        for photo in prepared_result[match]['photos'].values():
+            print(f'Photo: {photo}')
+        position += 1
 
 
 def get_search_result():
@@ -55,4 +67,5 @@ def get_search_result():
     result = prepare_result(top_matches)
     print('Saving to database')
     print('Finished successfully')
+    print_result(result)
     return result
