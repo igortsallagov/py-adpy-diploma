@@ -6,22 +6,24 @@ class VKUser:
 
     def __init__(self, user_id):
         user_id = str(user_id)
-        self.user_id = 0
         self.error = 0
-        params_init = dict(access_token=TOKEN, user_ids=user_id, v=VERSION)
-        method_url = f'{API_URL}/users.get'
-        request = requests.get(method_url, params_init).json()
-        try:
-            user_id = request['response'][0]['id']
+        if user_id.isdigit() is False:
+            params_init = dict(access_token=TOKEN, user_ids=user_id, v=VERSION)
+            method_url = f'{API_URL}/users.get'
+            request = requests.get(method_url, params_init).json()
+            try:
+                user_id = request['response'][0]['id']
+                self.user_id = user_id
+            except KeyError:
+                code = request['error']['error_code']
+                if code == 5:
+                    self.error = 5
+                elif code == 18:
+                    self.error = 18
+                elif code == 113:
+                    self.error = 113
+        else:
             self.user_id = user_id
-        except KeyError:
-            code = request['error']['error_code']
-            if code == 5:
-                self.error = 5
-            elif code == 18:
-                self.error = 18
-            elif code == 113:
-                self.error = 113
         self.user_data = {}
         self.sex = 0
         self.city = 0
@@ -38,7 +40,14 @@ class VKUser:
         method_url = f'{API_URL}/users.get'
         params_users_get = dict(access_token=TOKEN, user_id=self.user_id, v=VERSION, fields=FIELDS)
         result = requests.get(method_url, params_users_get).json()
-        self.user_data = result['response'][0]
+        try:
+            self.user_data = result['response'][0]
+        except KeyError:
+            code = result['error']['error_code']
+            if code == 18:
+                self.error = 18
+            elif code == 113:
+                self.error = 113
         try:
             self.sex = self.user_data['sex']
         except KeyError:

@@ -55,6 +55,7 @@ def print_result(prepared_result):
 def get_search_result():
     user_id, sex, age_from, age_to = ask_params()
     user = VKUser(user_id)
+    user.get_user_data()
     if user.error is 5:
         print('Invalid token given. Try again')
     elif user.error is 18:
@@ -62,7 +63,6 @@ def get_search_result():
     elif user.error is 113:
         print('User does not exist. Try again')
     else:
-        user.get_user_data()
         update_params(user)
         print(f'Searching for matches based on ID {user.user_id}')
         offset = get_offset()
