@@ -6,24 +6,22 @@ class VKUser:
 
     def __init__(self, user_id):
         user_id = str(user_id)
+        self.user_id = 0
         self.error = 0
-        if user_id.isdigit() is False:
-            params_init = dict(access_token=TOKEN, user_ids=user_id, v=VERSION)
-            method_url = f'{API_URL}/users.get'
-            request = requests.get(method_url, params_init).json()
-            try:
-                user_id = request['response'][0]['id']
-                self.user_id = user_id
-            except KeyError:
-                code = request['error']['error_code']
-                if code == 5:
-                    self.error = 5
-                elif code == 18:
-                    self.error = 18
-                elif code == 113:
-                    self.error = 113
-        else:
+        params_init = dict(access_token=TOKEN, user_ids=user_id, v=VERSION)
+        method_url = f'{API_URL}/users.get'
+        request = requests.get(method_url, params_init).json()
+        try:
+            user_id = request['response'][0]['id']
             self.user_id = user_id
+        except KeyError:
+            code = request['error']['error_code']
+            if code == 5:
+                self.error = 5
+            elif code == 18:
+                self.error = 18
+            elif code == 113:
+                self.error = 113
         self.user_data = {}
         self.sex = 0
         self.city = 0
