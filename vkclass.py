@@ -6,6 +6,7 @@ class VKUser:
 
     def __init__(self, user_id):
         user_id = str(user_id)
+        self.error = 0
         if user_id.isdigit() is False:
             params_init = dict(access_token=TOKEN, user_ids=user_id, v=VERSION)
             method_url = f'{API_URL}/users.get'
