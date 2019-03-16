@@ -1,12 +1,12 @@
 from pymongo import MongoClient
 from datetime import datetime
-from db.db_config import HOST, PORT, START, STEP, STOP
+from db.db_config import HOST, PORT, RES_DB, OFF_COL, START, STEP, STOP
 
 
 def get_offset():
     with MongoClient(HOST, PORT) as client:
-        db = client['vkinder_db']
-        collection = db['offset']
+        db = client[RES_DB]
+        collection = db[OFF_COL]
         query = collection.find_one()
         if query is None:
             offset = START
@@ -17,8 +17,8 @@ def get_offset():
 
 def update_offset(offset):
     with MongoClient(HOST, PORT) as client:
-        db = client['vkinder_db']
-        collection = db['offset']
+        db = client[RES_DB]
+        collection = db[OFF_COL]
         date = datetime.today()
         if offset < STOP:
             collection.update_one(
