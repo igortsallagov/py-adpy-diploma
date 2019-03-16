@@ -55,11 +55,11 @@ def print_result(prepared_result):
 def get_search_result():
     user_id, sex, age_from, age_to = ask_params()
     user = VKUser(user_id)
-    if user.error == 5:
+    if user.error is 5:
         print('Invalid token given. Try again')
-    elif user.error == 18:
+    elif user.error is 18:
         print('This user was deleted or banned')
-    elif user.error == 113:
+    elif user.error is 113:
         print('User does not exist. Try again')
     else:
         user.get_user_data()
