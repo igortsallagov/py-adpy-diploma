@@ -55,19 +55,25 @@ def print_result(prepared_result):
 def get_search_result():
     user_id, sex, age_from, age_to = ask_params()
     user = VKUser(user_id)
-    user.get_user_data()
-    update_params(user)
-    print(f'Searching for matches based on ID {user.user_id}')
-    offset = get_offset()
-    search_results = user.search_users(sex, age_from, age_to, offset)[1]
-    update_offset(offset)
-    print('Scoring users')
-    score_users(user, search_results)
-    print('Getting top matches')
-    top_matches = get_top_matches(search_results)
-    print('Preparing result')
-    result = prepare_result(top_matches)
-    print('Saving to database')
-    print('Finished successfully')
-    print_result(result)
-    return result
+    if user.error == 5:
+        print('Invalid token given. Try again')
+    elif user.error == 18:
+        print('This user was deleted or banned')
+    elif user.error == 113:
+        print('User does not exist. Try again')
+    else:
+        user.get_user_data()
+        update_params(user)
+        print(f'Searching for matches based on ID {user.user_id}')
+        offset = get_offset()
+        search_results = user.search_users(sex, age_from, age_to, offset)[1]
+        update_offset(offset)
+        print('Scoring users')
+        score_users(user, search_results)
+        print('Getting top matches')
+        top_matches = get_top_matches(search_results)
+        print('Preparing result')
+        result = prepare_result(top_matches)
+        print('Saving to database')
+        print('Finished successfully')
+        print_result(result)
