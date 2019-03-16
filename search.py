@@ -29,23 +29,25 @@ def get_top_photos(photos_list):
 
 @writer
 def prepare_result(top_matches):
-    result = dict()
+    result = list()
     for match in top_matches:
         photos_list = match[0].get_photos()
         top_photos = get_top_photos(photos_list)
-        result[str(match[0].user_id)] = {
+        match_dict = {
+            'id': str(match[0].user_id),
             'url': f'http://vk.com/id{match[0].user_id}',
             'photos': top_photos
         }
+        result.append(match_dict)
         time.sleep(0.35)
     return result
 
 
 def print_result(prepared_result):
     position = 1
-    for match in prepared_result.keys():
-        print(f'{position}. Profile URL: {prepared_result[match]["url"]}')
-        for photo in prepared_result[match]['photos'].values():
+    for match in prepared_result:
+        print(f'{position}. Profile URL: {match["url"]}')
+        for photo in match['photos'].values():
             print(f'Photo: {photo}')
         position += 1
 
