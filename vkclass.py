@@ -16,11 +16,11 @@ class VKUser:
                 self.user_id = user_id
             except KeyError:
                 code = request['error']['error_code']
-                if code == 5:
+                if code is 5:
                     self.error = 5
-                elif code == 18:
+                elif code is 18:
                     self.error = 18
-                elif code == 113:
+                elif code is 113:
                     self.error = 113
         else:
             self.user_id = user_id
@@ -44,9 +44,9 @@ class VKUser:
             self.user_data = result['response'][0]
         except KeyError:
             code = result['error']['error_code']
-            if code == 18:
+            if code is 18:
                 self.error = 18
-            elif code == 113:
+            elif code is 113:
                 self.error = 113
         try:
             self.sex = self.user_data['sex']
